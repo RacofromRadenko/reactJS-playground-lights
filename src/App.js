@@ -1,34 +1,44 @@
 import React, { Component } from 'react';
 import './App.less';
-import Lights from './components/Lights';
+import Lights from './components/Lights/Lights';
+import { connect } from 'react-redux';
+import * as actionTypes from './store/actions/actions';
 
 class App extends Component {
+	state = {
+		currentValue: 12
+	};
 
-  state = {
-    currentValue: null
-  }
+	componentDidMount() {
+		// this.tick();
 
+		// this.props.getCurrentValueInBITS();
+		setTimeout(() => {
+			this.props.getCurrentValueInBITS();
+		}, 600);
 
-  componentDidMount() {
-    this.tick();
+		console.log(this.props.extracted);
+	}
 
-  }
-
-
-  tick = () => {
-    this.setState({
-      currentValue:Math.floor(Math.random() * 255) + 0  
-    })
-  }
-
-  render() {
-    return (
-      <div className="App">
-        {this.state.currentValue}
-        <Lights currentValue={this.state.currentValue} />
-      </div>
-    );
-  }
+	render() {
+		return (
+			<div className="App">
+				<Lights currentValue={this.props.extracted.toString(2)} />
+			</div>
+		);
+	}
 }
 
-export default App;
+const mapStateToProps = (state) => {
+	return {
+		extracted: state.extracted.currentValue
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getCurrentValueInBITS: () => dispatch({ type: actionTypes.GET_DECIMAL_VALUE })
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
