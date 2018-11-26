@@ -1,25 +1,31 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.less';
+import Lights from './components/Lights';
 
 class App extends Component {
+
+  state = {
+    currentValue: null
+  }
+
+
+  componentDidMount() {
+    this.tick();
+
+  }
+
+
+  tick = () => {
+    this.setState({
+      currentValue:Math.floor(Math.random() * 255) + 0  
+    })
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        {this.state.currentValue}
+        <Lights currentValue={this.state.currentValue} />
       </div>
     );
   }
