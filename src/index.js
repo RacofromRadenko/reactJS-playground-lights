@@ -4,13 +4,19 @@ import './index.less';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { rootReducer } from './store/reducers/RootReducer';
 import { createProvider } from 'react-redux';
+import createSagaMiddleware from 'redux-saga';
+import { rootSaga } from './store/saga/rootSaga';
+
+const sagaMiddleware = createSagaMiddleware();
 
 const Provider = createProvider();
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
+
+sagaMiddleware.run(rootSaga);
 
 const app = (
 	<Provider store={store}>
